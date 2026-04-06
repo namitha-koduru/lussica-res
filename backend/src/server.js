@@ -1,12 +1,14 @@
+import cors from "cors";
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-
 // Middleware
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+app.use(cors({
+  origin: "https://lussicares.vercel.app/",
+}));
 app.use(express.json());
 
 // Routes

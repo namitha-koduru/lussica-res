@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: '/api' });
+// ✅ Use deployed backend URL
+const API = axios.create({
+  baseURL: process.env.REACT_APP_API_URL + '/api',
+});
 
 // Attach token to every request if available
 API.interceptors.request.use((config) => {
@@ -16,8 +19,12 @@ export const userLogin = (data) => API.post('/auth/user-login', data);
 // ── Menu ──────────────────────────────────────────────────
 export const getMenu = (category) =>
   API.get('/menu', { params: category ? { category } : {} });
+
 export const getAdminMenu = (category) =>
-  API.get('/menu/all', { params: category && category !== 'all' ? { category } : {} });
+  API.get('/menu/all', {
+    params: category && category !== 'all' ? { category } : {},
+  });
+
 export const addMenuItem = (data) => API.post('/menu', data);
 export const toggleMenuItem = (id) => API.patch(`/menu/${id}/toggle`);
 export const deleteMenuItem = (id) => API.delete(`/menu/${id}`);
