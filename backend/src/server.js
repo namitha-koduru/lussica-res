@@ -47,18 +47,21 @@ app.get('/api/health', (req, res) => {
 });
 
 // ================== DB CONNECTION ==================
-const PORT = process.env.PORT || 5000;
-
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
+  .then(async () => {
     console.log('✅ MongoDB connected');
+
+    // 👉 CALL SEED HERE
+    const MenuItem = require('./models/MenuItem');
+
+    const count = await MenuItem.countDocuments();
+    if (count === 0) {
+      await MenuItem.insertMany(require('./routes/menu').SEED_ITEMS || []);
+      console.log('🌱 Seeded menu');
+    }
 
     app.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
     });
   })
-  .catch((err) => {
-    console.error('❌ MongoDB connection failed:', err.message);
-    process.exit(1);
-  });
 
