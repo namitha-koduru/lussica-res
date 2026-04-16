@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 require('dotenv').config();
-
+const PORT = process.env.PORT || 5000;
 // ================== APP INIT ==================
 const app = express();
 
@@ -47,6 +47,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // ================== DB CONNECTION ==================
+console.log("MONGO_URI =", process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
     console.log('✅ MongoDB connected');

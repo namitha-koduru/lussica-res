@@ -39,7 +39,7 @@ async function seedIfEmpty() {
     console.log('🌱 Menu seeded with default items');
   }
 }
-seedIfEmpty();
+// seedIfEmpty(); // Removed to prevent premature DB operations
 
 // GET /api/menu — all active items (public)
 router.get('/', async (req, res) => {
@@ -103,3 +103,4 @@ router.delete('/:id', adminMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+module.exports.SEED_ITEMS = SEED_ITEMS;
