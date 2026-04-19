@@ -1,6 +1,6 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAdminMenu, addMenuItem, toggleMenuItem, deleteMenuItem, getFeedbacks } from '../api';
+import { getAdminMenu, addMenuItem, toggleMenuItem, deleteMenuItem, getFeedbacks, getOrders, updateOrderStatus } from '../api';
 import { useAuth, useToast } from '../context/AppContext';
 
 const CATEGORIES = ['all', 'breakfast', 'lunch', 'dinner', 'soups', 'snacks', 'drinks'];
@@ -9,11 +9,13 @@ export default function AdminPanel() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const showToast = useToast();
+  const pollingIntervalRef = useRef(null);
 
   const [activeSection, setActiveSection] = useState('menu');
   const [filter, setFilter] = useState('all');
   const [items, setItems] = useState([]);
   const [feedbacks, setFeedbacks] = useState([]);
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: '', price: '', category: 'breakfast' });
 
@@ -42,6 +44,33 @@ export default function AdminPanel() {
       showToast('Failed to load feedback', 'error');
     }
   }, [showToast]);
+
+  const fetchOrders = useCallback(async () => {
+    try {
+      const res = await getOrders();
+      setOrders(res.data);
+    } catch {
+      showToast('Failed to load orders', 'error');
+    }
+  }, [showToast]);
+
+  // Real-time polling for orders - increased to 8 seconds for better performance
+  useEffect(() => {
+    if (activeSection === 'orders') {
+      fetchOrders(); // Fetch immediately
+      
+      // Set up polling every 8 seconds to reduce server load
+      pollingIntervalRef.current = setInterval(() => {
+        fetchOrders();
+      }, 8000);
+    }
+
+    return () => {
+      if (pollingIntervalRef.current) {
+        clearInterval(pollingIntervalRef.current);
+      }
+    };
+  }, [activeSection, fetchOrders]);
 
   useEffect(() => {
     if (activeSection === 'menu') fetchMenu(filter);
@@ -79,6 +108,30 @@ export default function AdminPanel() {
     }
   };
 
+  const handleUpdateOrderStatus = async (id, status) => {
+    try {
+      console.log('🔄 Updating order', id, 'to status:', status);
+      const response = await updateOrderStatus(id, status);
+      console.log('✅ Order updated:', response.data);
+      
+      // Update local state immediately for instant UI feedback
+      setOrders(prevOrders => 
+        prevOrders.map(order => 
+          order._id === id ? { ...order, status } : order
+        )
+      );
+      
+      // Then fetch fresh data from server
+      setTimeout(() => fetchOrders(), 300);
+      showToast(`✅ Order status updated to ${status}`);
+    } catch (err) {
+      console.error('❌ Update error:', err.response?.data || err.message);
+      showToast(err.response?.data?.message || 'Failed to update order status.', 'error');
+      // Refresh to get server state if update failed
+      fetchOrders();
+    }
+  };
+
   const handleLogout = () => {
     logout();
     navigate('/admin/login');
@@ -99,6 +152,7 @@ export default function AdminPanel() {
           <div className="admin-sidebar-title">Navigation</div>
           {[
             { key: 'menu',     label: '🍽 Menu Management' },
+            { key: 'orders',   label: '📦 Order Management' },
             { key: 'feedback', label: '💬 Customer Feedback' },
           ].map((s) => (
             <button
@@ -185,6 +239,55 @@ export default function AdminPanel() {
                         >
                           Delete
                         </button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {activeSection === 'orders' && (
+            <>
+              <div className="admin-section-title">Order Management</div>
+              <div className="admin-section-sub">View and manage customer orders.</div>
+              {loading ? (
+                <div className="loading-center">Loading…</div>
+              ) : orders.length === 0 ? (
+                <p style={{ color: 'var(--muted)', fontSize: '0.88rem' }}>No orders yet.</p>
+              ) : (
+                <div className="orders-grid">
+                  {orders.map((order) => (
+                    <div className="order-card" key={order._id}>
+                      <div className="order-header">
+                        <div className="order-id">Order #{order._id.slice(-6)}</div>
+                        <div className="order-time">{new Date(order.createdAt).toLocaleString()}</div>
+                      </div>
+                      <div style={{ fontSize: '0.85rem', color: 'var(--muted)', marginBottom: '0.75rem', paddingBottom: '0.5rem', borderBottom: '1px solid rgba(0,0,0,0.1)' }}>
+                        <strong>Customer:</strong> {order.user || 'Guest'}
+                      </div>
+                      <div className="order-items">
+                        {order.items.map((item, idx) => (
+                          <div key={idx} className="order-item">
+                            <span>{item.name} x{item.quantity}</span>
+                            <span>₹{item.price * item.quantity}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="order-total">Total: ₹{order.total}</div>
+                      <div className="order-status">
+                        <select
+                          value={order.status}
+                          onChange={(e) => handleUpdateOrderStatus(order._id, e.target.value)}
+                          className="status-select"
+                        >
+                          <option value="pending">🔄 Pending</option>
+                          <option value="confirmed">✅ Accept</option>
+                          <option value="preparing">👨‍🍳 Preparing</option>
+                          <option value="ready">🍽️ Ready</option>
+                          <option value="taken">📦 Order Taken</option>
+                          <option value="cancelled">❌ Cancelled</option>
+                        </select>
                       </div>
                     </div>
                   ))}

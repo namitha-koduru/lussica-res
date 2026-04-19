@@ -9,6 +9,20 @@ export default function Footer() {
         <a href="#">Instagram</a>
         <Link to="/menu">Menu</Link>
         <a href="/#contact">Contact</a>
+        <Link 
+          to="/admin/login" 
+          style={{ 
+            fontSize: '0.6rem', 
+            opacity: 0.4, 
+            textDecoration: 'none',
+            transition: 'opacity 0.3s'
+          }}
+          onMouseEnter={(e) => e.target.style.opacity = '1'}
+          onMouseLeave={(e) => e.target.style.opacity = '0.4'}
+          title="Staff Access"
+        >
+          ⚙️
+        </Link>
       </div>
     </footer>
   );

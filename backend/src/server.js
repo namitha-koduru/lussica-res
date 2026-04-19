@@ -11,7 +11,8 @@ const app = express();
 // ================== CORS CONFIG ==================
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://lussicares.vercel.app"
+  "https://lussicares.vercel.app",
+  "https://lussica-res.onrender.com"
 ];
 
 app.use(cors({
@@ -42,7 +43,8 @@ app.use('/api/contact', require('./routes/contact'));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'OK',
-    message: '🚀 Luccica API running'
+    message: '🚀 Luccica API running',
+    timestamp: new Date().toISOString()
   });
 });
 
@@ -65,4 +67,8 @@ mongoose.connect(process.env.MONGO_URI)
       console.log(`🚀 Server running on port ${PORT}`);
     });
   })
+  .catch((err) => {
+    console.error('❌ MongoDB connection failed:', err.message);
+    process.exit(1);
+  });
 

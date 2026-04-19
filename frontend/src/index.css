@@ -444,6 +444,20 @@ footer .footer-copy { font-size: 0.72rem; color: rgba(245,240,232,0.3); letter-s
 .admin-tab:hover { color: var(--charcoal); }
 .admin-tab.active { color: var(--charcoal); border-bottom-color: var(--gold); }
 
+/* ── ORDERS ───────────────────────────────────────────────── */
+.orders-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+.order-card { background: #fff; border: 1px solid var(--border); padding: 1.5rem; }
+.order-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.order-id { font-family: var(--serif); font-size: 1.1rem; font-weight: 400; color: var(--charcoal); }
+.order-time { font-size: 0.7rem; color: var(--muted); }
+.order-items { margin-bottom: 1rem; }
+.order-item { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); padding: 0.3rem 0; border-bottom: 1px solid var(--border); }
+.order-item:last-child { border-bottom: none; }
+.order-total { font-family: var(--serif); font-size: 1.2rem; font-weight: 300; color: var(--charcoal); margin-bottom: 1rem; text-align: right; }
+.order-status { text-align: right; }
+.status-select { background: var(--ivory); border: 1px solid var(--border); padding: 0.5rem 0.8rem; font-family: var(--sans); font-size: 0.75rem; color: var(--charcoal); outline: none; cursor: pointer; }
+.status-select:focus { border-color: var(--gold); }
+
 /* ── POPUP / CART ──────────────────────────────────────────── */
 .popup { display: none; position: fixed; inset: 0; background: rgba(26,26,24,0.72); z-index: 999; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
 .popup.active { display: flex; }

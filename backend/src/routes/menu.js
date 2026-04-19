@@ -3,7 +3,7 @@ const router = express.Router();
 const MenuItem = require('../models/MenuItem');
 const { adminMiddleware } = require('../middleware/auth');
 
-const SEED_ITEMS = [
+const SEED_ITEMS = exports.SEED_ITEMS = [
   { name: 'Idli & Sambar',        price: 50,  category: 'breakfast' },
   { name: 'Plain Dosa',            price: 60,  category: 'breakfast' },
   { name: 'Masala Dosa',           price: 80,  category: 'breakfast' },

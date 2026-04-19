@@ -5,7 +5,7 @@ import { useCart, useAuth } from '../context/AppContext';
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const { cart, setCartOpen } = useCart();
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,8 +14,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
+
   return (
-    <header className={`topbar${scrolled ? ' scrolled' : ''}`}>
+    <header className={scrolled ? 'topbar scrolled' : 'topbar'}>
       <Link to="/" className="logo">
         Luccia<span>ca</span>
       </Link>
@@ -26,14 +31,24 @@ export default function Navbar() {
         <a href="/#contact">Contact</a>
       </nav>
       <div className="top-actions">
-        {user ? (
-          <span style={{ fontSize: '0.72rem', color: 'var(--muted)', letterSpacing: '0.1em' }}>
-            {user.email || user.username}
-          </span>
-        ) : (
-          <button className="btn user-btn" onClick={() => navigate('/login')}>Sign In</button>
+        {user?.email && user.role !== 'admin' && (
+          <>
+            <span style={{ fontSize: '0.72rem', color: 'var(--muted)', letterSpacing: '0.1em' }}>
+              {user.email || user.username}
+            </span>
+            <button className="btn user-btn" onClick={() => navigate('/profile')} style={{ fontSize: '0.72rem' }}>
+              Profile
+            </button>
+            <button className="btn user-btn" onClick={handleLogout} style={{ fontSize: '0.72rem' }}>
+              Logout
+            </button>
+          </>
         )}
-        <button className="btn admin-btn" onClick={() => navigate('/admin/login')}>Admin</button>
+        {!user?.email && (
+          <button className="btn user-btn" onClick={() => navigate('/login')} style={{ background: '#d4af37', color: 'black', fontWeight: 'bold', padding: '0.6rem 1.2rem', fontSize: '0.85rem', border: 'none', borderRadius: '4px', cursor: 'pointer', letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+            Sign In
+          </button>
+        )}
         <button className="btn cart-btn" onClick={() => setCartOpen(true)}>
           Cart <span>{cart.length}</span>
         </button>

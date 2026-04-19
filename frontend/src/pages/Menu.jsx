@@ -89,7 +89,7 @@ export default function Menu() {
                   <button className="btn-feedback" onClick={() => handleFeedback(item)}>
                     Send Review
                   </button>
-                  <button className="btn-add" onClick={() => addToCart(item)}>
+                  <button className="btn-add" onClick={() => addToCart({ ...item, quantity: 1 })}>
                     + Add to Cart
                   </button>
                 </div>
