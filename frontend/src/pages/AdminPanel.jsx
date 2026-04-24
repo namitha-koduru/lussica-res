@@ -141,7 +141,7 @@ export default function AdminPanel() {
     <div style={{ minHeight: '100vh', background: 'var(--ivory)' }}>
       {/* Admin Topbar */}
       <header className="admin-topbar">
-        <span className="logo">Luccia<span>ca</span></span>
+        <span className="logo">Lussi<span>ca</span></span>
         <span className="admin-badge">Admin Panel</span>
         <button className="admin-logout" onClick={handleLogout}>Logout</button>
       </header>

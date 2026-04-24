@@ -7,7 +7,7 @@ const API = axios.create({
 
 // Attach token to every request if available
 API.interceptors.request.use((config) => {
-  const token = localStorage.getItem('luccica_token');
+  const token = localStorage.getItem('lussica_token');
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
@@ -19,8 +19,8 @@ API.interceptors.response.use(
     if (error.response?.status === 401) {
       // Token expired or invalid
       console.warn('⚠️ 401 Error: Token invalid or expired');
-      localStorage.removeItem('luccica_token');
-      localStorage.removeItem('luccica_user');
+      localStorage.removeItem('lussica_token');
+      localStorage.removeItem('lussica_user');
       window.location.href = '/login';
     }
     return Promise.reject(error);

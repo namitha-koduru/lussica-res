@@ -127,78 +127,99 @@ export default function Profile() {
   const previousOrders = orders.filter(order => ['taken', 'cancelled'].includes(order.status));
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '900px', margin: '0 auto', minHeight: '100vh' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
-        <h1>👤 My Profile</h1>
-        <button
-          onClick={() => {
-            logout();
-            navigate('/');
-            showToast('Logged out successfully');
-          }}
-          style={{
-            padding: '0.6rem 1.2rem',
-            background: '#c0392b',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            textTransform: 'uppercase',
-            fontSize: '0.85rem',
-            letterSpacing: '0.1em',
-          }}
-        >
-          Logout
-        </button>
+    <div style={{ background: 'linear-gradient(to bottom, var(--bg-primary), var(--bg-secondary))', minHeight: '100vh', paddingBottom: '2rem' }}>
+      {/* Header */}
+      <div style={{ background: 'var(--bg-secondary)', borderBottom: '1px solid var(--border)', paddingTop: '3rem', paddingBottom: '2rem', marginBottom: '3rem' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+            <div>
+              <div style={{ fontSize: '0.9rem', color: 'var(--primary)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '0.5rem', fontWeight: 600 }}>
+                Welcome Back
+              </div>
+              <h1 style={{ fontSize: '2.5rem', margin: '0', fontFamily: 'Cormorant Garamond, serif', fontWeight: 300 }}>
+                {profile?.username || 'Account'}
+              </h1>
+            </div>
+            <button
+              onClick={() => {
+                logout();
+                navigate('/');
+                showToast('Logged out successfully');
+              }}
+              style={{
+                padding: '0.75rem 1.5rem',
+                background: '#c0392b',
+                color: 'white',
+                border: 'none',
+                borderRadius: '6px',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                fontSize: '0.85rem',
+                letterSpacing: '0.1em',
+              }}
+            >
+              Logout
+            </button>
+          </div>
+        </div>
       </div>
 
       {/* Tab Navigation */}
-      <div style={{ display: 'flex', gap: '1rem', borderBottom: '2px solid var(--border)', marginBottom: '2rem' }}>
-        {['info', 'password', 'orders'].map(tab => (
-          <button
-            key={tab}
-            onClick={() => setActiveTab(tab)}
-            style={{
-              padding: '1rem',
-              background: 'none',
-              border: 'none',
-              borderBottom: activeTab === tab ? '3px solid var(--primary)' : 'none',
-              color: activeTab === tab ? 'var(--primary)' : 'var(--text)',
-              cursor: 'pointer',
-              fontSize: '1rem',
-              fontWeight: activeTab === tab ? 'bold' : 'normal',
-            }}
-          >
-            {tab === 'info' && '📋 Account Info'}
-            {tab === 'password' && '🔑 Change Password'}
-            {tab === 'orders' && '📦 Orders'}
-          </button>
-        ))}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem', marginBottom: '2rem' }}>
+        <div style={{ display: 'flex', gap: '2rem', borderBottom: '2px solid var(--border)' }}>
+          {['info', 'password', 'orders'].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              style={{
+                padding: '1rem 0',
+                background: 'none',
+                border: 'none',
+                borderBottom: activeTab === tab ? '3px solid var(--primary)' : 'none',
+                color: activeTab === tab ? 'var(--text)' : 'var(--muted)',
+                cursor: 'pointer',
+                fontSize: '1rem',
+                fontWeight: activeTab === tab ? 600 : 400,
+                transition: 'all 0.3s ease',
+                marginBottom: '-2px',
+              }}
+            >
+              {tab === 'info' && '📋 Account Info'}
+              {tab === 'password' && '🔑 Security'}
+              {tab === 'orders' && '📦 My Orders'}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Tab Content */}
+      {/* Content Container */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 2rem' }}>
       {activeTab === 'info' && (
-        <div style={{ background: 'var(--bg-secondary)', padding: '2rem', borderRadius: '8px' }}>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--muted)', fontWeight: 'bold' }}>
-              Username
-            </label>
-            <p style={{ fontSize: '1.1rem', margin: 0 }}>{profile.username}</p>
-          </div>
-          <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--muted)', fontWeight: 'bold' }}>
-              Email
-            </label>
-            <p style={{ fontSize: '1.1rem', margin: 0 }}>{profile.email}</p>
+        <div style={{ background: 'var(--bg-secondary)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)' }}>
+          <h2 style={{ fontSize: '1.5rem', margin: '0 0 2rem 0', fontFamily: 'Cormorant Garamond, serif', fontWeight: 400 }}>Your Account Details</h2>
+          <div style={{ display: 'grid', gap: '2rem' }}>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.75rem', color: 'var(--muted)', fontWeight: 600, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em' }}>
+                Username
+              </label>
+              <p style={{ fontSize: '1.3rem', margin: 0, fontWeight: 500 }}>{profile.username}</p>
+            </div>
+            <div>
+              <label style={{ display: 'block', marginBottom: '0.75rem', color: 'var(--muted)', fontWeight: 600, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em' }}>
+                Email Address
+              </label>
+              <p style={{ fontSize: '1.3rem', margin: 0, fontWeight: 500 }}>{profile.email}</p>
+            </div>
           </div>
         </div>
       )}
 
       {activeTab === 'password' && (
-        <form onSubmit={handlePasswordChange} style={{ background: 'var(--bg-secondary)', padding: '2rem', borderRadius: '8px' }}>
+        <form onSubmit={handlePasswordChange} style={{ background: 'var(--bg-secondary)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border)', boxShadow: '0 4px 20px rgba(0,0,0,0.08)', maxWidth: '600px' }}>
+          <h2 style={{ fontSize: '1.5rem', margin: '0 0 2rem 0', fontFamily: 'Cormorant Garamond, serif', fontWeight: 400 }}>Change Your Password</h2>
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em', color: 'var(--muted)' }}>
               Current Password
             </label>
             <input
@@ -207,16 +228,18 @@ export default function Profile() {
               onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
               style={{
                 width: '100%',
-                padding: '0.75rem',
+                padding: '0.9rem 1rem',
                 border: '1px solid var(--border)',
-                borderRadius: '4px',
+                borderRadius: '6px',
                 fontSize: '1rem',
                 boxSizing: 'border-box',
+                background: 'var(--bg-primary)',
+                color: 'var(--text)',
               }}
             />
           </div>
           <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+            <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em', color: 'var(--muted)' }}>
               New Password
             </label>
             <input
@@ -225,16 +248,18 @@ export default function Profile() {
               onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
               style={{
                 width: '100%',
-                padding: '0.75rem',
+                padding: '0.9rem 1rem',
                 border: '1px solid var(--border)',
-                borderRadius: '4px',
+                borderRadius: '6px',
                 fontSize: '1rem',
                 boxSizing: 'border-box',
+                background: 'var(--bg-primary)',
+                color: 'var(--text)',
               }}
             />
           </div>
-          <div style={{ marginBottom: '1.5rem' }}>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 'bold' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <label style={{ display: 'block', marginBottom: '0.75rem', fontWeight: 600, textTransform: 'uppercase', fontSize: '0.85rem', letterSpacing: '0.1em', color: 'var(--muted)' }}>
               Confirm Password
             </label>
             <input
@@ -243,11 +268,13 @@ export default function Profile() {
               onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
               style={{
                 width: '100%',
-                padding: '0.75rem',
+                padding: '0.9rem 1rem',
                 border: '1px solid var(--border)',
-                borderRadius: '4px',
+                borderRadius: '6px',
                 fontSize: '1rem',
                 boxSizing: 'border-box',
+                background: 'var(--bg-primary)',
+                color: 'var(--text)',
               }}
             />
           </div>
@@ -255,54 +282,68 @@ export default function Profile() {
             type="submit"
             disabled={passwordLoading}
             style={{
-              padding: '0.75rem 2rem',
+              padding: '1rem 2rem',
               background: 'var(--primary)',
-              color: 'white',
+              color: 'var(--bg-primary)',
               border: 'none',
-              borderRadius: '4px',
+              borderRadius: '6px',
               cursor: passwordLoading ? 'not-allowed' : 'pointer',
               fontSize: '1rem',
               fontWeight: 'bold',
               opacity: passwordLoading ? 0.6 : 1,
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              transition: 'all 0.3s ease',
             }}
           >
-            {passwordLoading ? 'Updating...' : 'Change Password'}
+            {passwordLoading ? 'Updating...' : 'Update Password'}
           </button>
         </form>
       )}
 
       {activeTab === 'orders' && (
         <div>
-          <div style={{ marginBottom: '2rem' }}>
-            <h2 style={{ marginBottom: '1rem', fontSize: '1.3rem' }}>📍 Current Orders</h2>
+          <div style={{ marginBottom: '3rem' }}>
+            <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontFamily: 'Cormorant Garamond, serif', fontWeight: 400 }}>📍 Active Orders</h2>
             {currentOrders.length === 0 ? (
-              <p style={{ color: 'var(--muted)' }}>No current orders</p>
+              <div style={{ background: 'var(--bg-secondary)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
+                <p style={{ color: 'var(--muted)', fontSize: '1rem' }}>No active orders at the moment</p>
+              </div>
             ) : (
-              <div style={{ display: 'grid', gap: '1rem' }}>
+              <div style={{ display: 'grid', gap: '1.5rem' }}>
                 {currentOrders.map((order) => (
-                  <div key={order._id} style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                      <strong>Order #{order._id.slice(-6).toUpperCase()}</strong>
+                  <div key={order._id} style={{ background: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border)', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Order ID</p>
+                        <p style={{ margin: 0, fontSize: '1.2rem', fontWeight: 600 }}>#{order._id.slice(-6).toUpperCase()}</p>
+                      </div>
                       <span style={{
                         background: order.status === 'pending' ? '#e74c3c' : order.status === 'confirmed' ? '#f39c12' : order.status === 'preparing' ? '#e67e22' : order.status === 'ready' ? '#27ae60' : '#95a5a6',
                         color: 'white',
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '4px',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '6px',
                         fontSize: '0.85rem',
                         fontWeight: 'bold',
                         textTransform: 'capitalize',
+                        whiteSpace: 'nowrap'
                       }}>
                         {order.status}
                       </span>
                     </div>
-                    <p style={{ margin: '0.5rem 0', fontSize: '0.9rem', color: 'var(--muted)' }}>
-                      {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString()}
-                    </p>
-                    <p style={{ margin: '0.5rem 0' }}>
-                      <strong>Total: ₹{order.total}</strong>
-                    </p>
-                    <div style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>
-                      <strong>{order.items.length} items</strong>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Items</p>
+                        <p style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600 }}>{order.items.length}</p>
+                      </div>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Date</p>
+                        <p style={{ margin: 0, fontSize: '0.95rem' }}>{new Date(order.createdAt).toLocaleDateString()}</p>
+                      </div>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Amount</p>
+                        <p style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600, color: 'var(--primary)' }}>₹{order.total}</p>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -311,20 +352,25 @@ export default function Profile() {
           </div>
 
           <div>
-            <h2 style={{ marginBottom: '1rem', fontSize: '1.3rem' }}>📋 Previous Orders</h2>
+            <h2 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontFamily: 'Cormorant Garamond, serif', fontWeight: 400 }}>📋 Order History</h2>
             {previousOrders.length === 0 ? (
-              <p style={{ color: 'var(--muted)' }}>No previous orders</p>
+              <div style={{ background: 'var(--bg-secondary)', padding: '2rem', borderRadius: '12px', border: '1px solid var(--border)', textAlign: 'center' }}>
+                <p style={{ color: 'var(--muted)', fontSize: '1rem' }}>No previous orders</p>
+              </div>
             ) : (
-              <div style={{ display: 'grid', gap: '1rem' }}>
+              <div style={{ display: 'grid', gap: '1.5rem' }}>
                 {previousOrders.map((order) => (
-                  <div key={order._id} style={{ background: 'var(--bg-secondary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)', opacity: 0.7 }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                      <strong>Order #{order._id.slice(-6).toUpperCase()}</strong>
+                  <div key={order._id} style={{ background: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: '12px', border: '1px solid var(--border)', opacity: 0.8 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem' }}>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Order ID</p>
+                        <p style={{ margin: 0, fontSize: '1.2rem', fontWeight: 600 }}>#{order._id.slice(-6).toUpperCase()}</p>
+                      </div>
                       <span style={{
                         background: '#95a5a6',
                         color: 'white',
-                        padding: '0.25rem 0.75rem',
-                        borderRadius: '4px',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '6px',
                         fontSize: '0.85rem',
                         fontWeight: 'bold',
                         textTransform: 'capitalize',
@@ -332,12 +378,20 @@ export default function Profile() {
                         {order.status}
                       </span>
                     </div>
-                    <p style={{ margin: '0.5rem 0', fontSize: '0.9rem', color: 'var(--muted)' }}>
-                      {new Date(order.createdAt).toLocaleDateString()} {new Date(order.createdAt).toLocaleTimeString()}
-                    </p>
-                    <p style={{ margin: '0.5rem 0' }}>
-                      <strong>Total: ₹{order.total}</strong>
-                    </p>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginTop: '1rem', paddingTop: '1rem', borderTop: '1px solid var(--border)' }}>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Items</p>
+                        <p style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600 }}>{order.items.length}</p>
+                      </div>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Date</p>
+                        <p style={{ margin: 0, fontSize: '0.95rem' }}>{new Date(order.createdAt).toLocaleDateString()}</p>
+                      </div>
+                      <div>
+                        <p style={{ margin: '0 0 0.5rem 0', fontSize: '0.85rem', color: 'var(--muted)', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600 }}>Amount</p>
+                        <p style={{ margin: 0, fontSize: '1.1rem', fontWeight: 600 }}>₹{order.total}</p>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -345,6 +399,7 @@ export default function Profile() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

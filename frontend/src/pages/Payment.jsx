@@ -12,7 +12,6 @@ export default function Payment() {
   const [confirmLoading, setConfirmLoading] = useState(false);
 
   useEffect(() => {
-    // Get order data from location state
     if (!location.state || !location.state.order) {
       navigate('/');
       return;
@@ -31,9 +30,7 @@ export default function Payment() {
     
     setConfirmLoading(true);
     try {
-      // Simulate payment processing (no server call needed)
       await new Promise(resolve => setTimeout(resolve, 800));
-      
       showToast('✅ Payment confirmed! Order placed successfully!');
       navigate('/profile');
     } catch (err) {
@@ -46,142 +43,136 @@ export default function Payment() {
 
   if (!orderData) {
     return (
-      <div style={{ padding: '2rem', textAlign: 'center', minHeight: '100vh' }}>
-        <p>Loading payment...</p>
+      <div style={{ 
+        padding: '4rem 2rem', 
+        textAlign: 'center', 
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <p style={{ fontSize: '1.1rem', color: 'var(--muted)' }}>Loading payment...</p>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto', minHeight: '100vh' }}>
-      <h1 style={{ textAlign: 'center', marginBottom: '2rem' }}>💳 Payment</h1>
-
-      {/* Order Summary */}
-      <div style={{ background: 'var(--bg-secondary)', padding: '1.5rem', borderRadius: '8px', marginBottom: '2rem', border: '1px solid var(--border)' }}>
-        <h2 style={{ marginBottom: '1rem', fontSize: '1.1rem' }}>Order Summary</h2>
-        <div style={{ marginBottom: '1rem' }}>
-          <p style={{ margin: '0.5rem 0', color: 'var(--muted)' }}>
-            <strong>Order ID:</strong> #{orderData.orderId.slice(-6).toUpperCase()}
-          </p>
-          <p style={{ margin: '0.5rem 0', color: 'var(--muted)' }}>
-            <strong>Items:</strong> {orderData.itemCount}
-          </p>
-          <p style={{ margin: '0.5rem 0', fontSize: '1.2rem' }}>
-            <strong>Total: ₹{orderData.total}</strong>
-          </p>
+    <div style={{ 
+      background: 'linear-gradient(to bottom, var(--bg-primary), var(--bg-secondary))',
+      minHeight: '100vh',
+      padding: '3rem 2rem',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+    }}>
+      {/* Header */}
+      <div style={{ textAlign: 'center', marginBottom: '3rem', maxWidth: '800px' }}>
+        <div style={{ fontSize: '0.9rem', color: 'var(--primary)', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '1rem', fontWeight: 600 }}>
+          Order Confirmation
         </div>
+        <h1 style={{ fontSize: '3rem', margin: '0 0 1rem 0', fontFamily: 'Cormorant Garamond, serif', fontWeight: 300 }}>
+          Complete Your<br /><span style={{ color: 'var(--primary)' }}>Order</span>
+        </h1>
+        <p style={{ fontSize: '1rem', color: 'var(--muted)', lineHeight: 1.6 }}>
+          Review your order details below and confirm to proceed
+        </p>
       </div>
 
-      {/* QR Code Placeholder */}
-      <div style={{
-        background: 'var(--bg-secondary)',
-        padding: '2rem',
-        borderRadius: '8px',
-        marginBottom: '2rem',
+      {/* Order Summary Card */}
+      <div style={{ 
+        background: 'var(--bg-secondary)', 
         border: '1px solid var(--border)',
-        textAlign: 'center',
-        minHeight: '300px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
+        padding: '2rem', 
+        borderRadius: '12px',
+        maxWidth: '500px',
+        width: '100%',
+        marginBottom: '2rem',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)'
       }}>
-        <div style={{
-          width: '200px',
-          height: '200px',
-          background: '#e0e0e0',
-          borderRadius: '8px',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: '1rem',
-          border: '2px dashed #95a5a6',
-        }}>
-          <div style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>📱</div>
-          <div style={{ fontSize: '0.85rem', color: 'var(--muted)', textAlign: 'center' }}>
-            QR Code<br />Placeholder
+        <h2 style={{ 
+          fontSize: '1.3rem', 
+          margin: '0 0 1.5rem 0',
+          fontFamily: 'Cormorant Garamond, serif',
+          fontWeight: 400
+        }}>Order Summary</h2>
+        
+        <div style={{ borderBottom: '1px solid var(--border)', paddingBottom: '1rem', marginBottom: '1rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+            <span style={{ color: 'var(--muted)' }}>Order ID</span>
+            <span style={{ fontWeight: 600 }}>#{orderData.orderId.slice(-6).toUpperCase()}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.75rem' }}>
+            <span style={{ color: 'var(--muted)' }}>Items</span>
+            <span style={{ fontWeight: 600 }}>{orderData.itemCount} {orderData.itemCount === 1 ? 'item' : 'items'}</span>
           </div>
         </div>
-        <p style={{ color: 'var(--muted)', fontSize: '0.9rem', maxWidth: '400px', margin: '0' }}>
-          Scan this QR code with your payment app to complete the transaction
-        </p>
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.3rem', fontWeight: 600, margin: '1rem 0' }}>
+          <span>Total Amount</span>
+          <span style={{ color: 'var(--primary)' }}>₹{orderData.total}</span>
+        </div>
       </div>
 
-      {/* Sample Project Message */}
-      <div style={{
-        background: 'rgba(52, 152, 219, 0.1)',
-        border: '1px solid #3498db',
-        padding: '1rem',
+      {/* Payment Info */}
+      <div style={{ 
+        background: 'rgba(212, 175, 55, 0.08)', 
+        border: '1px solid var(--primary)',
+        padding: '1.5rem',
         borderRadius: '8px',
+        maxWidth: '500px',
+        width: '100%',
         marginBottom: '2rem',
-        textAlign: 'center',
+        textAlign: 'center'
       }}>
-        <p style={{ margin: '0.5rem 0', color: '#2980b9', fontWeight: 'bold' }}>
-          ℹ️ This is a sample project
-        </p>
-        <p style={{ margin: '0.5rem 0', color: '#2980b9', fontSize: '0.9rem' }}>
-          Just click "Place Order" to confirm your order. No actual payment processing.
+        <p style={{ margin: 0, color: 'var(--text)', fontSize: '0.95rem' }}>
+          <strong>Payment Methods:</strong> UPI, Card, Google Pay, PhonePe, Paytm
         </p>
       </div>
 
-      {/* Payment Method Info */}
-      <div style={{
-        background: 'var(--bg-secondary)',
-        padding: '1rem',
-        borderRadius: '8px',
-        marginBottom: '2rem',
-        border: '1px solid var(--border)',
-      }}>
-        <h3 style={{ marginBottom: '0.75rem' }}>Payment Methods</h3>
-        <ul style={{ margin: 0, paddingLeft: '1.5rem', color: 'var(--muted)', fontSize: '0.9rem' }}>
-          <li>Google Pay</li>
-          <li>PhonePe</li>
-          <li>Paytm</li>
-          <li>Card Payment</li>
-          <li>UPI</li>
-        </ul>
+      {/* Action Buttons */}
+      <div style={{ maxWidth: '500px', width: '100%', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+        <button
+          onClick={handleConfirmOrder}
+          disabled={confirmLoading}
+          style={{
+            padding: '1rem',
+            background: 'var(--primary)',
+            color: 'var(--bg-primary)',
+            border: 'none',
+            borderRadius: '6px',
+            cursor: confirmLoading ? 'not-allowed' : 'pointer',
+            fontSize: '1.1rem',
+            fontWeight: 'bold',
+            opacity: confirmLoading ? 0.7 : 1,
+            transition: 'all 0.3s ease',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            boxShadow: confirmLoading ? 'none' : '0 4px 15px rgba(212, 175, 55, 0.3)',
+            ':hover': { transform: 'translateY(-2px)', boxShadow: '0 6px 20px rgba(212, 175, 55, 0.4)' }
+          }}
+        >
+          {confirmLoading ? '⏳ Processing...' : '✅ Confirm & Place Order'}
+        </button>
+
+        <button
+          onClick={() => navigate('/menu')}
+          style={{
+            padding: '0.9rem',
+            background: 'transparent',
+            color: 'var(--primary)',
+            border: '2px solid var(--primary)',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '1rem',
+            fontWeight: 'bold',
+            transition: 'all 0.3s ease',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em'
+          }}
+        >
+          ← Continue Shopping
+        </button>
       </div>
-
-      {/* Confirm Button */}
-      <button
-        onClick={handleConfirmOrder}
-        disabled={confirmLoading}
-        style={{
-          width: '100%',
-          padding: '1rem',
-          background: 'var(--primary)',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: confirmLoading ? 'not-allowed' : 'pointer',
-          fontSize: '1.1rem',
-          fontWeight: 'bold',
-          opacity: confirmLoading ? 0.7 : 1,
-          transition: 'all 0.3s ease',
-        }}
-      >
-        {confirmLoading ? '⏳ Processing...' : '✅ Place Order'}
-      </button>
-
-      {/* Back to Menu */}
-      <button
-        onClick={() => navigate('/menu')}
-        style={{
-          width: '100%',
-          padding: '0.75rem',
-          background: 'transparent',
-          color: 'var(--primary)',
-          border: '1px solid var(--primary)',
-          borderRadius: '4px',
-          cursor: 'pointer',
-          fontSize: '0.95rem',
-          marginTop: '1rem',
-          fontWeight: 'bold',
-        }}
-      >
-        Continue Shopping
-      </button>
     </div>
   );
 }

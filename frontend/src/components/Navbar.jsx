@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <header className={scrolled ? 'topbar scrolled' : 'topbar'}>
       <Link to="/" className="logo">
-        Luccia<span>ca</span>
+        Lussi<span>ca</span>
       </Link>
       <nav>
         <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink>

@@ -18,7 +18,7 @@ export function AppProvider({ children }) {
   const [cartOpen, setCartOpen] = useState(false);
   const [toasts, setToasts] = useState([]);
   const [user, setUser] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('luccica_user')); } catch { return null; }
+    try { return JSON.parse(localStorage.getItem('lussica_user')); } catch { return null; }
   });
 
   const showToast = useCallback((msg, type = 'default') => {
@@ -39,14 +39,14 @@ export function AppProvider({ children }) {
   const clearCart = useCallback(() => setCart([]), []);
 
   const login = useCallback((token, userData) => {
-    localStorage.setItem('luccica_token', token);
-    localStorage.setItem('luccica_user', JSON.stringify(userData));
+    localStorage.setItem('lussica_token', token);
+    localStorage.setItem('lussica_user', JSON.stringify(userData));
     setUser(userData);
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('luccica_token');
-    localStorage.removeItem('luccica_user');
+    localStorage.removeItem('lussica_token');
+    localStorage.removeItem('lussica_user');
     setUser(null);
   }, []);
 

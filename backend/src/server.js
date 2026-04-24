@@ -45,7 +45,7 @@ let dbConnected = false;
 app.get('/api/health', (req, res) => {
   res.json({
     status: dbConnected ? 'OK' : 'DEGRADED',
-    message: dbConnected ? '🚀 Luccica API running' : '🔄 API initializing...',
+    message: dbConnected ? '🚀 Lussica API running' : '🔄 API initializing...',
     timestamp: new Date().toISOString(),
     database: dbConnected ? 'connected' : 'connecting'
   });
