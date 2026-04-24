@@ -13,7 +13,7 @@ import AdminPanel from './pages/AdminPanel';
 import Profile from './pages/Profile';
 import Payment from './pages/Payment';
 import axios from 'axios';
-
+console.log("CHANGE DETECTED");
 function Layout({ children, showFooter = true }) {
   return (
     <>
