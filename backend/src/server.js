@@ -40,12 +40,20 @@ app.use('/api/cart', require('./routes/cart'));
 app.use('/api/contact', require('./routes/contact'));
 
 // ================== HEALTH CHECK ==================
+let dbConnected = false;
+
 app.get('/api/health', (req, res) => {
   res.json({
-    status: 'OK',
-    message: '🚀 Luccica API running',
-    timestamp: new Date().toISOString()
+    status: dbConnected ? 'OK' : 'DEGRADED',
+    message: dbConnected ? '🚀 Luccica API running' : '🔄 API initializing...',
+    timestamp: new Date().toISOString(),
+    database: dbConnected ? 'connected' : 'connecting'
   });
+});
+
+// ================== SERVER STARTUP ==================
+const server = app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
 
 // ================== DB CONNECTION ==================
@@ -53,6 +61,7 @@ console.log("MONGO_URI =", process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI)
   .then(async () => {
     console.log('✅ MongoDB connected');
+    dbConnected = true;
 
     // 👉 CALL SEED HERE
     const MenuItem = require('./models/MenuItem');
@@ -62,13 +71,21 @@ mongoose.connect(process.env.MONGO_URI)
       await MenuItem.insertMany(require('./routes/menu').SEED_ITEMS || []);
       console.log('🌱 Seeded menu');
     }
-
-    app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-    });
   })
   .catch((err) => {
     console.error('❌ MongoDB connection failed:', err.message);
-    process.exit(1);
+    dbConnected = false;
+    // Don't exit - allow health check to work for monitoring
   });
+
+// Handle graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received, closing server...');
+  server.close(() => {
+    mongoose.connection.close(false, () => {
+      console.log('MongoDB connection closed.');
+      process.exit(0);
+    });
+  });
+});
 

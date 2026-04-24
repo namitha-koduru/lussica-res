@@ -25,14 +25,54 @@ function Layout({ children, showFooter = true }) {
 }
 
 function BackendWarning() {
-  const [backendDown, setBackendDown] = useState(false);
+  const [backendDown, setBackendDown] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    axios.get(process.env.REACT_APP_API_URL + '/api/health', { timeout: 3000 })
-      .catch(() => setBackendDown(true));
+    let isActive = true;
+    const apiUrl = process.env.REACT_APP_API_URL;
+
+    if (!apiUrl) {
+      console.warn('⚠️ REACT_APP_API_URL not configured');
+      if (isActive) setBackendDown(true);
+      return;
+    }
+
+    // Delay initial check by 1.5s to allow cold start
+    const initialDelay = setTimeout(() => {
+      checkBackendHealth(apiUrl, isActive, 0);
+    }, 1500);
+
+    return () => {
+      isActive = false;
+      clearTimeout(initialDelay);
+    };
   }, []);
 
-  if (!backendDown) return null;
+  const checkBackendHealth = async (apiUrl, isActive, attempt) => {
+    try {
+      await axios.get(`${apiUrl}/api/health`, { timeout: 8000 });
+      if (isActive) setBackendDown(false);
+    } catch (error) {
+      if (!isActive) return;
+
+      const isNetworkError = !error.response;
+      const shouldRetry = attempt < 2 && (isNetworkError || error.code === 'ECONNABORTED');
+
+      if (shouldRetry) {
+        const delay = 2000 * (attempt + 1);
+        setRetryCount(attempt + 1);
+        setTimeout(() => {
+          checkBackendHealth(apiUrl, isActive, attempt + 1);
+        }, delay);
+      } else {
+        console.error('❌ Backend health check failed:', error.message);
+        if (isActive) setBackendDown(true);
+      }
+    }
+  };
+
+  if (backendDown === false || backendDown === null) return null;
 
   return (
     <div style={{
@@ -47,7 +87,9 @@ function BackendWarning() {
       fontSize: '0.9rem',
       zIndex: 999
     }}>
-      ⚠️ Backend server not running. Please start backend: <code>cd backend && npm start</code>
+      {retryCount > 0 
+        ? `⏳ Connecting to server (attempt ${retryCount + 1})...`
+        : `⚠️ Backend server offline. Verifying connection...`}
     </div>
   );
 }

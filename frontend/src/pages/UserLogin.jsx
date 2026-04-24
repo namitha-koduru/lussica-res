@@ -51,7 +51,7 @@ export default function UserLogin() {
       } else if (err.response?.status === 400) {
         setError(errorMsg || 'Invalid input. Please check your information.');
       } else if (err.code === 'ERR_NETWORK') {
-        setError('Connection error. Make sure the server is running at http://localhost:5000');
+        setError('Connection error. Please check if the backend server is running.');
       } else {
         setError(errorMsg || (isSignup ? 'Signup failed.' : 'Login failed.'));
       }
