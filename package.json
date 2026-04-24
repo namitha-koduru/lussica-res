@@ -1,15 +1,4 @@
 {
-  "name": "luccica-mern",
-  "version": "1.0.0",
-  "description": "Luccica Restaurant — Full MERN Stack",
-  "scripts": {
-    "install:all": "cd backend && npm install && cd ../frontend && npm install",
-    "build": "cd frontend && npm install && npm run build",
-    "dev:backend": "cd backend && npm run dev",
-    "dev:frontend": "cd frontend && npm start",
-    "start": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\""
-  },
-  "devDependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "name": "lussica-root",
+  "private": true
 }
