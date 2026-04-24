@@ -1,3 +1,4 @@
+<h1 style={{color: "red"}}>TEST CHANGE</h1>
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
