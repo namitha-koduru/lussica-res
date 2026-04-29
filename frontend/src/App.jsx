@@ -1,14 +1,3 @@
-function App() {
-  return (
-    <>
-      <h1 style={{ color: "red" }}>TEST CHANGE</h1>
-
-      {/* your existing code */}
-    </>
-  );
-}
-
-export default App;
 import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
