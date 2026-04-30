@@ -1,37 +1,37 @@
-# 🍽️ Luccica Restaurant — MERN Stack Application
+# 🍽️ Luccica — Full Stack Restaurant Platform
 
-A full-stack restaurant web application built using the **MERN stack (MongoDB, Express.js, React.js, Node.js)**.
-This project provides a seamless experience for users to explore menu items, place orders, and for admins to manage restaurant operations.
+Luccica is a **full-stack restaurant management and ordering platform** built using the MERN stack (MongoDB, Express.js, React.js, Node.js).  
+It allows users to explore menus and place orders, while admins can manage restaurant operations through a secure dashboard.
 
 ---
 
 ## 🚀 Features
 
 ### 👤 User Features
+- Browse menu with categories 🍔  
+- Add items to cart 🛒  
+- Place orders  
+- Submit feedback & contact forms  
+- JWT-based authentication  
 
-* Browse menu with categories 🍔
-* Add items to cart 🛒
-* Place orders
-* Submit feedback & contact forms
-* User authentication (JWT-based)
+---
 
-### 🔑 Admin Features
-
-* Secure admin login
-* Add / update / delete menu items
-* Enable / disable items
-* View customer feedback
-* Manage restaurant content
+### 🔐 Admin Features
+- Secure admin login  
+- Add / update / delete menu items  
+- Enable / disable items  
+- View customer feedback  
+- Manage restaurant content  
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** React.js, CSS
-* **Backend:** Node.js, Express.js
-* **Database:** MongoDB (Atlas / Local)
-* **Authentication:** JSON Web Tokens (JWT)
-* **Other:** REST APIs, Axios
+- **Frontend:** React.js, CSS  
+- **Backend:** Node.js, Express.js  
+- **Database:** MongoDB (Atlas / Local)  
+- **Authentication:** JSON Web Tokens (JWT)  
+- **Other:** REST APIs, Axios  
 
 ---
 
@@ -39,23 +39,22 @@ This project provides a seamless experience for users to explore menu items, pla
 
 ```
 luccica/
-├── backend/                   # Express + MongoDB API
+├── backend/
 │   ├── src/
-│   │   ├── models/            # Mongoose schemas
-│   │   ├── routes/            # API routes
-│   │   ├── middleware/        # Auth middleware
-│   │   └── server.js          # Entry point
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   └── server.js
 │   ├── .env.example
 │   └── package.json
 │
-├── frontend/                  # React application
-│   ├── public/
-│   │   └── assets/            # Images (add here)
+├── frontend/
+│   ├── public/assets/
 │   ├── src/
-│   │   ├── components/        # UI components
-│   │   ├── pages/             # App pages
-│   │   ├── context/           # Global state
-│   │   ├── api.js             # API calls
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── context/
+│   │   ├── api.js
 │   │   └── App.jsx
 │   └── package.json
 │
@@ -68,15 +67,14 @@ luccica/
 ## ⚙️ Installation & Setup
 
 ### 🔹 Prerequisites
-
-* Node.js (v18+)
-* MongoDB (Local or Atlas)
+- Node.js (v18+ recommended)  
+- MongoDB (Local or Atlas)  
 
 ---
 
 ### 🔹 1. Clone Repository
 
-```bash
+```
 git clone https://github.com/namitha-koduru/lussica-res.git
 cd lussica
 ```
@@ -85,7 +83,7 @@ cd lussica
 
 ### 🔹 2. Backend Setup
 
-```bash
+```
 cd backend
 npm install
 cp .env.example .env
@@ -93,14 +91,15 @@ cp .env.example .env
 
 Update `.env`:
 
-```env
+```
 MONGO_URI=your_mongodb_connection_string
 PORT=5000
+JWT_SECRET=your_secret_key
 ```
 
 Run backend:
 
-```bash
+```
 npm run dev
 ```
 
@@ -108,7 +107,7 @@ npm run dev
 
 ### 🔹 3. Frontend Setup
 
-```bash
+```
 cd frontend
 npm install
 npm start
@@ -116,78 +115,63 @@ npm start
 
 ---
 
-## 🌐 Application URLs
+## 🌐 Application URLs (Development)
 
-| Page        | URL                               |
-| ----------- | --------------------------------- |
-| Home        | http://localhost:3000             |
-| Menu        | http://localhost:3000/menu        |
-| User Login  | http://localhost:3000/login       |
-| Admin Login | http://localhost:3000/admin/login |
-| Admin Panel | http://localhost:3000/admin       |
-
----
-
-## 🔑 Default Credentials
-
-| Role  | Username | Password |
-| ----- | -------- | -------- |
-| Admin | admin    | admin123 |
+- Home → https://lussicares.vercel.app/ 
+- Menu → https://lussicares.vercel.app/menu
+- User Login → https://lussicares.vercel.app/login  
+- Admin Login → https://lussicares.vercel.app/login  
+- Admin Panel → https://lussicares.vercel.app/admin  
 
 ---
 
 ## 🔌 API Endpoints
 
 ### Authentication
-
-* `POST /api/auth/admin-login`
-* `POST /api/auth/user-login`
+- POST `/api/auth/admin-login`  
+- POST `/api/auth/user-login`  
 
 ### Menu
-
-* `GET /api/menu`
-* `GET /api/menu/all` (Admin)
-* `POST /api/menu` (Admin)
-* `PATCH /api/menu/:id/toggle` (Admin)
-* `DELETE /api/menu/:id` (Admin)
+- GET `/api/menu`  
+- GET `/api/menu/all` (Admin)  
+- POST `/api/menu` (Admin)  
+- PATCH `/api/menu/:id/toggle` (Admin)  
+- DELETE `/api/menu/:id` (Admin)  
 
 ### Other
-
-* `POST /api/feedback`
-* `GET /api/feedback` (Admin)
-* `POST /api/contact`
-* `POST /api/cart/checkout`
+- POST `/api/feedback`  
+- GET `/api/feedback` (Admin)  
+- POST `/api/contact`  
+- POST `/api/cart/checkout`  
 
 ---
 
-## ✨ Highlights
+## 🔐 Default Admin Credentials
 
-* ⚡ Fast React SPA (React Router v6)
-* 🔐 Secure JWT Authentication
-* 🛒 Cart & checkout system
-* 🧾 Admin dashboard with full control
-* 🌱 Auto-seeded menu data (first run)
-* 📱 Fully responsive design
-* 🎨 Clean and modern UI
+- Username: `admin`  
+- Password: `admin123`  
+
+> ⚠️ Change credentials before deploying
 
 ---
 
 ## ⚠️ Important Notes
 
-* Do NOT upload `node_modules`
-* Run `npm install` after cloning
-* Keep `.env` file private
-* Ensure MongoDB is running / Atlas is configured
+- Do not commit `node_modules`  
+- Always run `npm install` after cloning  
+- Keep `.env` file private  
+- Ensure MongoDB is running  
+- `localhost` URLs are for development only  
 
 ---
 
 ## 🚀 Future Improvements
 
-* 💳 Payment gateway integration
-* 📦 Order tracking system
-* 🔔 Notifications (email/SMS)
-* 📊 Analytics dashboard
-* 🌍 Deployment (Vercel + Render)
+- Payment gateway integration  
+- Order tracking system  
+- Notifications (Email/SMS)  
+- Analytics dashboard  
+- Deployment (Vercel + Render)  
 
 ---
 
